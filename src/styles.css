@@ -342,13 +342,16 @@ button {
 
 .hero__title {
   font-family: var(--serif);
-  font-size: 19.4cqi;
+  font-size: 19.2cqi;
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.035em;
   white-space: nowrap !important;
-  margin-left: -0.03em;
-  padding-bottom: 0.08em;
+  /* room on both sides so the round letters (the G above all) are never
+     trimmed by the animation's own clipping box */
+  overflow: visible !important;
+  padding: 0.04em 0.06em 0.08em 0.06em;
+  margin-left: -0.04em;
 }
 
 .hero__meta {
@@ -1042,7 +1045,7 @@ button {
   /* smaller type is set wider by the font's optical sizing, so the name
      needs a smaller share of the column here */
   .hero__title {
-    font-size: 16.6cqi;
+    font-size: 15.8cqi;
   }
 
   .cards {

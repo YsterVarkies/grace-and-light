@@ -38,13 +38,12 @@ export default function Dive() {
             tag="h1"
             text="Grace & Light"
             splitType="chars"
-            mask
             trigger="load"
             delay={38}
             duration={1.2}
             ease="power4.out"
-            from={{ yPercent: 108 }}
-            to={{ yPercent: 0 }}
+            from={{ opacity: 0, yPercent: 35 }}
+            to={{ opacity: 1, yPercent: 0 }}
             textAlign="left"
             className="hero__title"
           />
