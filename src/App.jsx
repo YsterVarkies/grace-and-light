@@ -32,12 +32,63 @@ export default function App() {
     let lenis = null;
     let tick = null;
     if (!reduce) {
-      lenis = new Lenis({ lerp: 0.11, anchors: true });
+      lenis = new Lenis({ lerp: 0.11 });
       lenis.on('scroll', ScrollTrigger.update);
       tick = time => lenis.raf(time * 1000);
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
     }
+
+    // A link to a part of the page first flies through the camera lens, at a
+    // pace you can watch, and then glides on to the section you chose. (From
+    // below the dive it simply glides.)
+    const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const onLinkClick = e => {
+      const link = e.target.closest?.('a[href^="#"]');
+      const id = link?.getAttribute('href');
+      if (!lenis || !id || id.length < 2 || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      history.replaceState(null, '', id);
+
+      const done = () => document.querySelector('.nav')?.classList.remove('is-away');
+      if (id === '#top') {
+        lenis.scrollTo(0, { duration: Math.min(4, 1 + window.scrollY / 2500), easing: easeInOut, onComplete: done });
+        return;
+      }
+
+      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      const glide = (again = true) => {
+        const distance = Math.abs(target.getBoundingClientRect().top - margin);
+        // (Lenis already allows for the section's scroll-margin-top)
+        lenis.scrollTo(target, {
+          duration: again ? Math.min(5, 1 + distance / 1800) : 0.5,
+          easing: easeInOut,
+          onComplete: () => {
+            // the page can settle a little while it moves (images, the dive
+            // letting go), so check once more that we are exactly there
+            if (again && Math.abs(target.getBoundingClientRect().top - margin) > 3) glide(false);
+            else done();
+          }
+        });
+      };
+
+      const dive = ScrollTrigger.getAll().find(s => s.vars.trigger === '.dive');
+      const diveEnd = dive ? dive.end : 0;
+      if (dive && window.scrollY < diveEnd - 40) {
+        // through the lens: the whole dive takes a few seconds, then on to the section
+        const left = diveEnd - window.scrollY;
+        lenis.scrollTo(diveEnd, {
+          duration: Math.min(4.8, 0.8 + left / 1100),
+          easing: t => t * (2 - t) * 0.35 + t * 0.65, // steady, easing out gently at the photograph
+          onComplete: () => setTimeout(glide, 350)
+        });
+      } else {
+        glide();
+      }
+    };
+    document.addEventListener('click', onLinkClick);
 
     let undo = () => {};
     const ctx = gsap.context(() => {
@@ -61,6 +112,7 @@ export default function App() {
 
     return () => {
       window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('click', onLinkClick);
       undo();
       ctx.revert();
       if (tick) gsap.ticker.remove(tick);
