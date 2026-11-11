@@ -56,7 +56,7 @@ export const steps = [
   {
     title: 'First, a message',
     tint: 'blush',
-    text: 'Tell me who it is for and what you have in mind. We choose a place and a date, and I look up the light for that day.'
+    text: 'Tell me who it is for and what you have in mind. You choose a place and a date, and I look up the light for that day.'
   },
   {
     title: 'On the day',
