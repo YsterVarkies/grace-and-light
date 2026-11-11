@@ -413,7 +413,7 @@ export class Stage {
   // How far back the camera must stand, and how much world it then sees.
   metrics() {
     const portrait = this.aspect < 1; // matches the (orientation: portrait) rules in styles.css
-    const heroZ = Math.max(5.7, 3.15 / (2 * TAN * this.aspect));
+    const heroZ = Math.max(6.4, 3.15 / (2 * TAN * this.aspect));
     const visH = 2 * TAN * heroZ;
     return { portrait, heroZ, visH, visW: visH * this.aspect };
   }
@@ -425,7 +425,7 @@ export class Stage {
 
   heroPose() {
     const { portrait, heroZ, visH } = this.metrics();
-    return { x: portrait ? -0.2 : 0.04, y: visH * (portrait ? 0.075 : 0.15), rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
+    return { x: portrait ? -0.2 : 0.04, y: visH * (portrait ? 0.075 : 0.16), rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
   }
 
   sessionPose(i) {

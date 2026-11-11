@@ -5,16 +5,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // All scroll choreography for the page. `stage` is the WebGL camera (or null
 // when WebGL is unavailable); `reduce` is the visitor's reduced-motion setting.
-export function buildScroll(stage, reduce, lenis) {
+export function buildScroll(stage, reduce) {
   const D = stage?.dive;
-  const P = stage?.pose;
   const hero = () => stage.heroPose();
-  const cleanups = [];
-  const done = () => cleanups.forEach(fn => fn());
 
   if (stage) {
     Object.assign(D, hero());
-    Object.assign(P, stage.sessionPose(0));
     stage.still = reduce;
   }
 
@@ -45,11 +41,9 @@ export function buildScroll(stage, reduce, lenis) {
       }
     });
 
-    tl.to('.hero__meta', { autoAlpha: 0, y: -24, duration: 0.07 }, 0.01).to(
-      '.hero__name',
-      { yPercent: 16, autoAlpha: 0, duration: 0.17, ease: 'power1.in' },
-      0.05
-    );
+    tl.to('.hero__meta', { autoAlpha: 0, y: -24, duration: 0.07 }, 0.01)
+      .to('.hero__script', { autoAlpha: 0, y: -16, duration: 0.07 }, 0.01)
+      .to('.hero__name', { yPercent: 16, autoAlpha: 0, duration: 0.17, ease: 'power1.in' }, 0.05);
 
     if (stage) {
       tl.fromTo(
@@ -72,7 +66,7 @@ export function buildScroll(stage, reduce, lenis) {
       .set('.reveal', { autoAlpha: 1 }, 0.74)
       .fromTo(
         '.reveal__img',
-        { scale: 1.12, filter: 'brightness(2.6) saturate(0.5)' },
+        { scale: 1.12, filter: 'brightness(1.9) saturate(0.5)' },
         { scale: 1, filter: 'brightness(1) saturate(1)', duration: 0.2, ease: 'power2.out' },
         0.75
       )
@@ -82,133 +76,35 @@ export function buildScroll(stage, reduce, lenis) {
       .to({}, { duration: 0.03 }, 0.97);
   }
 
-  /* ---- sessions: one pinned screen; the camera turns as the words change ---- */
-  const articles = gsap.utils.toArray('.session');
-  const tabs = gsap.utils.toArray('.tabs button');
-  const stack = document.querySelector('.sessions__stack');
-  let active = 0;
-
-  const poseFor = i => {
-    const { alpha, ...pose } = { alpha: 0, ...stage.sessionPose(i) };
-    return pose;
-  };
-  const markTab = i =>
-    tabs.forEach((t, n) => (n === i ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current')));
-
-  const show = i => {
-    if (i === active) return;
-    const from = articles[active];
-    const to = articles[i];
-    const down = i > active;
-    active = i;
-    markTab(i);
-    gsap.killTweensOf([...articles, ...articles.flatMap(el => Array.from(el.children))]);
-    articles.forEach(el => el !== to && el !== from && el.remove());
-    gsap.to(from, {
-      autoAlpha: 0,
-      y: down ? -18 : 18,
-      duration: 0.3,
-      ease: 'power2.in',
-      onComplete: () => {
-        if (articles[active] !== from) from.remove();
-      }
-    });
-    stack.appendChild(to);
-    gsap.set(to, { autoAlpha: 1, y: 0 });
-    gsap.fromTo(
-      to.children,
-      { autoAlpha: 0, y: down ? 30 : -30 },
-      { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.07, delay: 0.22 }
-    );
-    if (stage) gsap.to(P, { ...poseFor(i), duration: 1.5, ease: 'power3.inOut', overwrite: 'auto' });
-  };
-
-  let pin = null;
-  if (!reduce) {
-    // Only the session on show is in the document; the others wait off-stage.
-    articles.slice(1).forEach(el => el.remove());
-    cleanups.push(() => articles.forEach(el => stack.appendChild(el)));
-    pin = ScrollTrigger.create({
-      trigger: '.sessions__panel',
-      start: 'top top',
-      end: '+=260%',
-      pin: true,
-      anticipatePin: 1,
-      onUpdate: self => show(Math.min(articles.length - 1, Math.floor(self.progress * articles.length)))
-    });
-
-    const jump = e => {
-      const i = Number(e.currentTarget.dataset.step);
-      const y = pin.start + ((i + 0.5) / articles.length) * (pin.end - pin.start);
-      if (lenis) lenis.scrollTo(y, { duration: 1.1 });
-      else window.scrollTo({ top: y, behavior: 'smooth' });
-    };
-    tabs.forEach(t => t.addEventListener('click', jump));
-    cleanups.push(() => tabs.forEach(t => t.removeEventListener('click', jump)));
-  }
-
-  if (stage) {
-    const narrow = () => stage.metrics().portrait;
-    const ride = () => {
-      if (!pin) return stage.setLift(0);
-      const y = window.scrollY;
-      // below its pinned place while the panel arrives, above it once the panel leaves
-      stage.setLift(y < pin.start ? y - pin.start : y > pin.end ? y - pin.end : 0);
-    };
-
-    ScrollTrigger.create({
-      trigger: '.sessions',
-      start: () => (pin ? pin.start - window.innerHeight : 'top 45%'),
-      end: () => (pin ? pin.end + window.innerHeight : 'bottom 55%'),
-      onUpdate: ride,
-      onRefresh: ride,
-      onToggle: self => {
-        // In reduced motion the sessions stack as plain text; on a phone the
-        // camera would sit over them, so it stays away there.
-        if (reduce && narrow()) return;
-        ride();
-        if (self.isActive) {
-          stage.mode = 'sessions';
-          gsap.to(P, { alpha: 1, duration: 0.25, overwrite: 'auto' });
-        } else {
-          const leavingUp = self.direction < 0;
-          gsap.to(P, {
-            alpha: 0,
-            duration: 0.2,
-            overwrite: 'auto',
-            onComplete: () => {
-              if (leavingUp) stage.mode = 'dive';
-            }
-          });
-        }
-      }
-    });
-
-    ScrollTrigger.addEventListener('refreshInit', () => Object.assign(P, poseFor(active)));
-  }
-
-  if (reduce) return done;
+  if (reduce) return () => {};
 
   /* ---- entrances: the parts of each section arrive one after another ---- */
   gsap.utils.toArray('[data-rise]').forEach(group => {
     const items = group.dataset.rise === 'self' ? [group] : Array.from(group.children);
     gsap.from(items, {
-      y: 28,
+      y: 36,
       autoAlpha: 0,
-      duration: 0.8,
+      duration: 0.9,
       ease: 'power3.out',
-      stagger: 0.07,
-      scrollTrigger: { trigger: group, start: 'top 94%', once: true }
+      stagger: 0.09,
+      scrollTrigger: { trigger: group, start: 'top 92%', once: true }
     });
+  });
+
+  /* ---- the portfolio's photographs rise in as they arrive ---- */
+  ScrollTrigger.batch('.shot', {
+    start: 'top 94%',
+    once: true,
+    onEnter: batch => gsap.from(batch, { y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.07 })
   });
 
   /* ---- photographs drift slowly inside their frames ---- */
   gsap.utils.toArray('[data-drift]').forEach(img => {
     gsap.fromTo(
       img,
-      { scale: 1.16, yPercent: -3 },
+      { scale: 1.14, yPercent: -3 },
       {
-        scale: 1.04,
+        scale: 1.02,
         yPercent: 3,
         ease: 'none',
         scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
@@ -216,7 +112,7 @@ export function buildScroll(stage, reduce, lenis) {
     );
   });
 
-  return done;
+  return () => {};
 }
 
 // The load entrance of the first screen.
@@ -226,6 +122,7 @@ export function playEntrance(stage, reduce) {
     gsap.fromTo(stage.entrance, { fade: 0 }, { fade: 1, duration: 1.6, ease: 'power2.out', delay: 0.15 });
     gsap.fromTo(stage.entrance, { turn: -0.9 }, { turn: 0, duration: 2.6, ease: 'power3.out', delay: 0.1 });
   }
+  gsap.from('.hero__script', { y: 18, autoAlpha: 0, duration: 1, ease: 'power3.out', delay: 0.5 });
   gsap.from('.hero__meta > *', { y: 22, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1, delay: 0.35 });
   gsap.from('.nav', { y: -18, autoAlpha: 0, duration: 0.9, ease: 'power3.out', delay: 0.25 });
 }

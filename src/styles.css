@@ -1,29 +1,27 @@
-/* Grace & Light Photography
-   Direction: "the dark room". One dark field, and in it, lit things.
-   One typeface (Newsreader), five sizes, one bronze accent kept for the action. */
+/* Grace & Light Photography: a warm, light portfolio.
+   Fraunces for headings, DM Sans for reading, Allura for the signature line
+   that echoes the logo. Buttons are ink-black pills. */
 
 :root {
-  --bg: #111111;
-  --surface: #1c1c1c;
-  --field: #2a2a2a;
-  --ink: #f2f2f2;
-  --muted: #a6a6a6;
-  --accent: #a08672;
-  --accent-ink: #111111;
-  --light: #efe6d8; /* the light at the back of the lens */
+  --cream: #fbf5ec;
+  --paper: #ffffff;
+  --sand: #f1e5d3;
+  --blush: #f7ded4;
+  --sky: #dce8f2;
+  --sage: #dee6d5;
+  --ink: #1d1a17;
+  --muted: #655d55;
 
-  --m: clamp(20px, 2.4vw, 32px);
-  --gap: clamp(16px, 1.7vw, 24px);
-  --nav-h: 64px;
+  --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --script: 'Allura', 'Snell Roundhand', cursive;
 
-  --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
-  --step-body: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
-  --step-lead: clamp(1.375rem, 1.05rem + 1.3vw, 2.125rem);
-  --step-head: clamp(2.25rem, 1rem + 4.6vw, 5.25rem);
-  --step-display: 18.2vw;
-
+  --m: clamp(20px, 4vw, 56px);
+  --nav-h: 92px;
+  --r: 24px;
+  --shadow: 0 14px 40px rgba(78, 52, 28, 0.14);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *,
@@ -33,7 +31,7 @@
 }
 
 html {
-  background: var(--bg);
+  background: var(--cream);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -48,15 +46,13 @@ html.lenis body {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--cream);
   color: var(--ink);
-  font-family: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  font-optical-sizing: auto;
-  font-size: var(--step-body);
+  font-family: var(--sans);
+  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
   font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
@@ -78,6 +74,10 @@ fieldset {
   padding: 0;
 }
 
+ul {
+  list-style: none;
+}
+
 fieldset {
   border: 0;
   min-width: 0;
@@ -85,58 +85,54 @@ fieldset {
 
 a {
   color: inherit;
-  text-decoration-thickness: 0.06em;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.22em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 4px;
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--ink);
+  color: var(--cream);
 }
 
 /* ---------- shared pieces ---------- */
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  padding-inline: var(--m);
-}
-
 .section {
-  padding-block: clamp(104px, 13vw, 208px);
+  padding: clamp(72px, 9vw, 140px) var(--m);
+  scroll-margin-top: calc(var(--nav-h) - 20px);
 }
 
 .head {
-  font-size: var(--step-head);
-  font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 1.1rem + 4.7vw, 4.75rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
 }
 
-.statement {
-  font-size: var(--step-lead);
-  line-height: 1.24;
-  letter-spacing: -0.012em;
+.script {
+  font-family: var(--script);
+  font-size: clamp(2.1rem, 1.4rem + 2.2vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
 }
 
-.note {
-  font-size: var(--step-small);
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.frame {
+.arch {
   overflow: hidden;
-  background: var(--surface);
+  border-radius: 999px 999px var(--r) var(--r);
+  background: var(--sand);
+  box-shadow: var(--shadow);
 }
 
-.frame img {
+.arch img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -147,34 +143,52 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 0 28px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font: inherit;
-  font-size: var(--step-body);
+  min-height: 54px;
+  padding: 0 30px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 1.0625rem;
   font-weight: 500;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
-  /* press feedback uses the scale property, so it never fights the scripted transforms */
+  cursor: pointer;
+  /* hover and press use the translate and scale properties, so they never
+     fight the scripted transforms */
   transition:
-    background-color 0.35s var(--ease),
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    translate 0.3s var(--ease),
     scale 0.2s var(--ease);
 }
 
 .btn:hover {
-  background: var(--ink);
+  background: #3d352d;
+  border-color: #3d352d;
+  translate: 0 -2px;
 }
 
 .btn:active {
   scale: 0.97;
 }
 
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
 .btn--small {
-  min-height: 40px;
-  padding: 0 18px;
-  font-size: var(--step-small);
+  min-height: 44px;
+  padding: 0 22px;
+  font-size: 0.9375rem;
 }
 
 .btn--wide {
@@ -192,7 +206,7 @@ a {
   pointer-events: none;
 }
 
-/* ---------- navigation: a plain bar ---------- */
+/* ---------- navigation ---------- */
 
 .nav {
   position: fixed;
@@ -205,8 +219,10 @@ a {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding-inline: var(--m);
-  background: var(--bg);
-  font-size: var(--step-small);
+  background: rgba(251, 245, 236, 0.86);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  font-size: 1rem;
   transition: translate 0.55s var(--ease);
 }
 
@@ -216,20 +232,24 @@ a {
 
 .nav__mark {
   justify-self: start;
-  font-size: var(--step-body);
-  letter-spacing: -0.02em;
-  text-decoration: none;
+  display: block;
+  height: calc(var(--nav-h) - 22px);
+}
+
+.nav__mark img {
+  height: 100%;
+  width: auto;
 }
 
 .nav__links {
   display: flex;
-  gap: clamp(20px, 2.6vw, 40px);
+  gap: clamp(22px, 3vw, 44px);
 }
 
 .nav__links a {
-  text-decoration: none;
-  padding-block: 8px;
   position: relative;
+  padding-block: 8px;
+  text-decoration: none;
 }
 
 .nav__links a::after {
@@ -237,7 +257,7 @@ a {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 4px;
+  bottom: 3px;
   height: 2px;
   background: currentColor;
   transform: scaleX(0);
@@ -260,16 +280,58 @@ a {
   position: relative;
   height: 100svh;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--cream);
 }
 
 .hero {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: var(--nav-h) var(--m) clamp(20px, 3.4vh, 36px);
+  padding: var(--nav-h) var(--m) clamp(22px, 3.6vh, 40px);
+  /* first light: a pale sky above, cream in the middle, peach at the horizon */
+  background: linear-gradient(180deg, #e3edf6 0%, #fbf1e3 46%, #f9d9c6 100%);
+}
+
+.hero__bokeh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__bokeh i {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--c) 0%, rgba(255, 255, 255, 0) 68%);
+  animation: drift var(--d) ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3vw, -2vw, 0) scale(1.1);
+  }
+}
+
+.hero__script,
+.hero__name,
+.hero__meta {
+  position: relative;
+}
+
+.hero__script {
+  font-family: var(--script);
+  font-size: clamp(2rem, 1.2rem + 3vw, 4rem);
+  line-height: 1;
+  margin-bottom: clamp(2px, 1vh, 12px);
 }
 
 /* The name is sized from its own column, so it runs margin to margin whatever
@@ -279,41 +341,34 @@ a {
 }
 
 .hero__title {
-  font-size: var(--step-display);
-  font-size: 19.05cqi;
-  font-weight: 300;
-  line-height: 0.9;
-  letter-spacing: -0.055em;
+  font-family: var(--serif);
+  font-size: 19.4cqi;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
   white-space: nowrap !important;
-  margin-left: -0.035em;
-  padding-bottom: 0.06em;
+  margin-left: -0.03em;
+  padding-bottom: 0.08em;
 }
 
 .hero__meta {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  align-items: end;
-  margin-top: clamp(20px, 3vh, 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-top: clamp(14px, 2.4vh, 28px);
 }
 
 .hero__line {
-  grid-column: 1 / span 5;
-  max-width: 34ch;
+  max-width: 28ch;
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
   line-height: 1.4;
 }
 
 .hero__actions {
-  grid-column: 7 / -1;
-  justify-self: end;
   display: flex;
   align-items: center;
-  gap: clamp(16px, 2vw, 32px);
-}
-
-.hero__cue {
-  font-size: var(--step-small);
-  color: var(--muted);
+  gap: 14px;
 }
 
 .reveal,
@@ -324,21 +379,22 @@ a {
   opacity: 0;
 }
 
-/* Through the lens: her photograph hangs on the right like a lit print, and
-   the line sits on the dark beside it. */
+/* Through the lens: one of her photographs, in an arch, beside the line. */
 .reveal {
   overflow: hidden;
-  background: var(--bg);
+  background: var(--cream);
 }
 
 .reveal__frame {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 46vw;
+  top: calc(var(--nav-h) + 14px);
+  right: var(--m);
+  bottom: 22px;
+  width: min(44vw, 640px);
   overflow: hidden;
-  background: var(--surface);
+  border-radius: 999px 999px var(--r) var(--r);
+  box-shadow: var(--shadow);
+  background: var(--sand);
 }
 
 .reveal__img {
@@ -351,24 +407,25 @@ a {
 .reveal__text {
   position: absolute;
   left: var(--m);
-  bottom: clamp(28px, 6vh, 72px);
-  width: calc(54vw - var(--m) * 2);
+  bottom: clamp(28px, 7vh, 80px);
+  width: calc(100% - min(44vw, 640px) - var(--m) * 3);
   display: grid;
-  gap: clamp(16px, 2.6vh, 32px);
+  gap: clamp(14px, 2.4vh, 28px);
 }
 
 .reveal__title {
-  font-size: var(--step-head);
-  font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 1.1rem + 4.7vw, 4.75rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
 }
 
 .reveal__line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 
 .reveal__line span {
@@ -376,180 +433,318 @@ a {
 }
 
 .reveal__note {
-  max-width: 24ch;
-  font-size: var(--step-lead);
-  line-height: 1.24;
-  letter-spacing: -0.012em;
-  color: var(--muted);
+  font-family: var(--script);
+  font-size: clamp(1.9rem, 1.3rem + 2vw, 3rem);
+  line-height: 1.1;
 }
 
 .flash {
-  background: var(--light);
+  background: #efe6d8;
 }
 
-/* ---------- intro: her mark, and what the name means ---------- */
+/* ---------- portfolio ---------- */
 
-.intro__head {
-  grid-column: 1 / -1;
-  margin-bottom: clamp(48px, 7vw, 112px);
+.portfolio {
+  background: var(--paper);
 }
 
-.intro__mark {
-  grid-column: 1 / span 4;
-  align-self: start;
-}
-
-.intro__mark img {
-  width: 100%;
-  height: auto;
-}
-
-.intro__words {
-  grid-column: 7 / -1;
-  display: grid;
-  gap: 1.3em;
-  align-content: start;
-  max-width: 44rem;
-}
-
-.intro__words .statement {
-  text-indent: 3em;
-  margin-bottom: 0.4em;
-}
-
-/* ---------- sessions: one pinned screen ---------- */
-
-.sessions__panel {
-  height: 100svh;
-  min-height: 600px;
-  grid-template-rows: auto auto 1fr;
-  padding-top: calc(var(--nav-h) + clamp(20px, 6vh, 64px));
-  padding-bottom: clamp(24px, 7vh, 72px);
-}
-
-.sessions__head {
-  grid-column: 1 / span 7;
-}
-
-.tabs {
-  grid-column: 1 / span 7;
+.portfolio__top {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 clamp(18px, 2.4vw, 36px);
-  margin-top: clamp(10px, 2vh, 24px);
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 40px;
+  margin-bottom: clamp(32px, 4vw, 56px);
 }
 
-.tabs button {
-  min-height: 44px;
-  padding: 0;
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter {
+  min-height: 46px;
+  padding: 0 22px;
   border: 0;
-  background: none;
-  color: var(--muted);
-  font: inherit;
+  border-radius: 999px;
+  background: var(--sand);
   cursor: pointer;
-  transition: color 0.35s var(--ease);
+  transition:
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    scale 0.2s var(--ease);
 }
 
-.tabs button:hover,
-.tabs button[aria-current='true'] {
-  color: var(--ink);
+.filter:hover {
+  background: var(--blush);
 }
 
-.sessions__stack {
-  grid-column: 1 / span 5;
-  align-self: start;
-  margin-top: clamp(28px, 9vh, 104px);
+.filter:active {
+  scale: 0.96;
+}
+
+.filter[aria-pressed='true'] {
+  background: var(--ink);
+  color: #fff;
+}
+
+.masonry {
+  columns: 3;
+  column-gap: clamp(14px, 1.6vw, 22px);
+}
+
+.shot {
+  display: block;
+  width: 100%;
+  margin: 0 0 clamp(14px, 1.6vw, 22px);
+  padding: 0;
+  break-inside: avoid;
+  border: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--sand);
+  box-shadow: var(--shadow);
+  cursor: zoom-in;
+  transition:
+    scale 0.5s var(--ease),
+    box-shadow 0.5s var(--ease);
+}
+
+.shot img {
+  width: 100%;
+  height: auto;
+  transition: scale 0.8s var(--ease);
+}
+
+.shot:hover {
+  scale: 1.015;
+  box-shadow: 0 22px 54px rgba(78, 52, 28, 0.22);
+}
+
+.shot:hover img {
+  scale: 1.04;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
   display: grid;
+  place-items: center;
+  background: rgba(24, 18, 12, 0.93);
+  cursor: zoom-out;
+  animation: fade 0.35s var(--ease);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightbox__img {
+  max-width: min(92vw, 1100px);
+  max-height: 86svh;
+  width: auto;
+  height: auto;
+  border-radius: 14px;
+  cursor: default;
+}
+
+.lightbox__btn {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease),
+    scale 0.2s var(--ease);
+}
+
+.lightbox__btn:hover {
+  background: #fff;
+  scale: 1.08;
+}
+
+.lightbox__close {
+  top: 20px;
+  right: 20px;
+}
+
+.lightbox__prev {
+  left: 20px;
+  top: 50%;
+  margin-top: -26px;
+}
+
+.lightbox__next {
+  right: 20px;
+  top: 50%;
+  margin-top: -26px;
+}
+
+.lightbox__count {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  font-size: 0.9375rem;
+}
+
+/* ---------- sessions ---------- */
+
+.sessions {
+  background: var(--cream);
+}
+
+.sessions__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px 56px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.sessions__lead {
+  max-width: 34ch;
+  font-size: 1.1875rem;
+  color: var(--muted);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
 }
 
 .session {
-  grid-area: 1 / 1;
-  align-self: start;
-  display: grid;
-  gap: clamp(14px, 2vh, 26px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 14px 26px;
+  border-radius: 30px;
+  background: var(--sand);
+}
+
+.session--blush {
+  background: var(--blush);
+}
+
+.session--sky {
+  background: var(--sky);
+}
+
+.session--sage {
+  background: var(--sage);
+}
+
+.session__pic {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 999px 999px 18px 18px;
+  background: rgba(255, 255, 255, 0.55);
+  margin-bottom: 8px;
+}
+
+.session__pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.session__pic .session__logo {
+  object-fit: contain;
+  padding: 16% 12% 8%;
+}
+
+.session h3,
+.session p,
+.session .facts,
+.session .btn {
+  margin-inline: 12px;
+}
+
+.session h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 1.4rem + 0.8vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.session p {
+  font-size: 1.0625rem;
+  line-height: 1.55;
 }
 
 .facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 28px;
-  list-style: none;
-  font-size: var(--step-small);
-  color: var(--muted);
+  gap: 8px;
 }
 
-/* ---------- recent work: two photographs down a diagonal ---------- */
-
-.work__item {
-  display: contents;
+.facts li {
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
-.work__head {
-  grid-column: 7 / -1;
-  grid-row: 1;
-}
-
-.work__photo--a {
-  grid-column: 1 / span 5;
-  grid-row: 1 / span 2;
-  aspect-ratio: 3 / 4;
-}
-
-.work__text--a {
-  grid-column: 7 / span 5;
-  grid-row: 2;
-  align-self: end;
-}
-
-.work__photo--b {
-  grid-column: 7 / span 5;
-  grid-row: 3;
-  aspect-ratio: 2 / 3;
-  margin-top: clamp(72px, 10vw, 160px);
-}
-
-.work__text--b {
-  grid-column: 2 / span 4;
-  grid-row: 3;
-  align-self: end;
-}
-
-.work__text {
-  display: grid;
-  gap: 14px;
-  max-width: 30rem;
-}
-
-.work__text h3 {
-  font-size: var(--step-lead);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-}
-
-.work__more {
-  grid-column: 7 / -1;
-  grid-row: 4;
-  margin-top: clamp(40px, 5vw, 72px);
+.session .btn {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 /* ---------- the light ---------- */
 
-.light__head {
-  grid-column: 1 / -1;
-  margin-bottom: clamp(40px, 5vw, 72px);
+.light {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--sky) 100%);
+}
+
+.light__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: center;
+}
+
+.light__pic {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 560px;
+}
+
+.light__words {
+  display: grid;
+  gap: clamp(28px, 3.4vw, 44px);
+  align-content: start;
 }
 
 .sun {
-  grid-column: 1 / span 5;
-  align-self: start;
   display: grid;
-  gap: 18px;
+  gap: 16px;
+  padding: clamp(20px, 2.4vw, 32px);
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
 }
 
 .sun__title {
-  font-size: var(--step-body);
-  font-weight: 500;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .sun__times {
@@ -561,9 +756,11 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 6px 24px;
   padding: 16px 20px;
-  background: var(--surface);
+  border-radius: 18px;
+  background: var(--cream);
 }
 
 .sun__times dt {
@@ -571,46 +768,68 @@ a {
 }
 
 .sun__times dd {
-  font-size: var(--step-lead);
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
   line-height: 1.1;
   font-variant-numeric: tabular-nums lining-nums;
-  letter-spacing: -0.01em;
 }
 
 .stages {
-  grid-column: 7 / -1;
-  align-self: start;
   display: grid;
-  gap: 1.2em;
-  max-width: 36rem;
+  gap: 1.1em;
+  max-width: 40rem;
 }
 
 .stages strong {
-  font-weight: 500;
+  font-weight: 600;
 }
 
-/* ---------- booking: her sign-off, and the card beside it ---------- */
+/* ---------- booking ---------- */
+
+.book {
+  background: linear-gradient(180deg, var(--sky) 0%, var(--blush) 100%);
+}
+
+.book__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: center;
+}
 
 .book__words {
-  grid-column: 1 / span 7;
-  align-self: end;
   display: grid;
-  gap: clamp(20px, 2.4vw, 32px);
-  max-width: 50rem;
+  gap: clamp(18px, 2.2vw, 28px);
+  justify-items: start;
+}
+
+.book__words p:not(.script) {
+  max-width: 34rem;
+}
+
+.book__pic img {
+  object-position: 50% 15%;
+}
+
+.book__pic {
+  width: min(260px, 60%);
+  aspect-ratio: 3 / 4;
+  margin-top: 12px;
 }
 
 .card {
-  grid-column: 9 / -1;
-  align-self: end;
   display: grid;
   gap: 22px;
-  padding: 32px;
-  background: var(--surface);
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: 32px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
 }
 
 .card__title {
-  font-size: var(--step-lead);
-  font-weight: 300;
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.4rem);
+  font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -623,7 +842,7 @@ a {
 .field legend,
 .field > span {
   padding: 0;
-  font-size: var(--step-small);
+  font-size: 0.9375rem;
   color: var(--muted);
 }
 
@@ -653,8 +872,9 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  background: var(--field);
+  min-height: 48px;
+  border-radius: 999px;
+  background: var(--sand);
   line-height: 1;
   transition:
     background-color 0.3s var(--ease),
@@ -663,7 +883,7 @@ a {
 }
 
 .chip:hover span {
-  background: #363636;
+  background: var(--blush);
 }
 
 .chip:active span {
@@ -672,21 +892,21 @@ a {
 
 .chip input:checked + span {
   background: var(--ink);
-  color: var(--bg);
+  color: #fff;
 }
 
 .chip input:focus-visible + span {
-  outline: 2px solid var(--ink);
+  outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
 
 .field input[type='date'] {
   width: 100%;
-  min-height: 48px;
-  padding: 0 14px;
+  min-height: 52px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 0;
-  background: var(--field);
+  border-radius: 16px;
+  background: var(--sand);
   color: var(--ink);
   font: inherit;
   font-variant-numeric: tabular-nums;
@@ -696,21 +916,23 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 16px;
-  font-size: var(--step-small);
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.9375rem;
   color: var(--muted);
 }
 
 .card__gold strong {
-  font-size: var(--step-body);
-  font-weight: 500;
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  font-weight: 400;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .card__call {
-  font-size: var(--step-small);
+  font-size: 0.9375rem;
   color: var(--muted);
   text-align: center;
 }
@@ -719,90 +941,70 @@ a {
   color: var(--ink);
 }
 
-/* ---------- footer: one quiet line ---------- */
+/* ---------- footer ---------- */
 
 .footer {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: baseline;
-  gap: 14px var(--gap);
-  padding: 18svh var(--m) 28px;
-  font-size: var(--step-small);
+  gap: clamp(28px, 4vw, 48px);
+  padding: clamp(56px, 7vw, 96px) var(--m) 32px;
+  background: var(--sand);
 }
 
-.footer__what,
+.footer__logo {
+  width: clamp(150px, 16vw, 220px);
+  height: auto;
+}
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  font-size: 1rem;
+}
+
+.footer__cols nav {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.footer__cols a {
+  width: fit-content;
+}
+
 .footer__year {
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
-.footer__links {
-  display: flex;
-  gap: 24px;
-}
-
-.footer__year {
-  justify-self: end;
-}
-
 /* ---------- tablet ---------- */
+
+@media (max-width: 1100px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 @media (max-width: 960px) {
   .nav {
     grid-template-columns: 1fr auto;
   }
 
-  .nav__links,
-  .nav__kind {
+  .nav__links {
     display: none;
   }
 
-  .hero__line {
-    grid-column: 1 / span 7;
+  .masonry {
+    columns: 2;
   }
 
-  .hero__actions {
-    grid-column: 8 / -1;
+  .light__grid,
+  .book__grid {
+    grid-template-columns: 1fr;
   }
 
-  .hero__cue {
-    display: none;
-  }
-
-  .intro__mark {
-    grid-column: 1 / span 4;
-  }
-
-  .intro__words {
-    grid-column: 6 / -1;
-  }
-
-  .intro__words .statement {
-    text-indent: 2em;
-  }
-
-  .sessions__stack {
-    grid-column: 1 / span 6;
-  }
-
-  .work__text--b {
-    grid-column: 1 / span 5;
-  }
-
-  .sun {
-    grid-column: 1 / span 6;
-  }
-
-  .stages {
-    grid-column: 8 / -1;
-  }
-
-  .book__words {
-    grid-column: 1 / -1;
-    margin-bottom: 56px;
-  }
-
-  .card {
-    grid-column: 6 / -1;
+  .light__pic {
+    max-width: 420px;
   }
 }
 
@@ -810,142 +1012,88 @@ a {
 
 @media (max-width: 640px) {
   :root {
-    --step-display: 17.4vw;
+    --nav-h: 70px;
+    --r: 20px;
   }
 
   .hero__meta {
-    grid-template-columns: 1fr;
-    row-gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
   }
 
-  .hero__line,
   .hero__actions {
-    grid-column: 1 / -1;
-  }
-
-  .hero__actions,
-  .hero__actions > div,
-  .hero__actions .btn {
-    width: 100%;
-    justify-self: stretch;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .hero__actions > div {
     display: block !important;
   }
 
-  .intro__head {
-    margin-bottom: 40px;
+  .hero__actions .btn {
+    width: 100%;
   }
 
-  .intro__words {
-    grid-column: 1 / -1;
-    grid-row: 2;
+  .hero__line {
+    max-width: none;
   }
 
-  .intro__words .statement {
-    text-indent: 0;
+  /* smaller type is set wider by the font's optical sizing, so the name
+     needs a smaller share of the column here */
+  .hero__title {
+    font-size: 16.6cqi;
   }
 
-  .intro__mark {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    width: 74%;
-    margin-top: 56px;
-  }
-
-  .tabs {
-    font-size: var(--step-small);
-    gap: 0 18px;
-  }
-
-  .session {
-    gap: 12px;
-  }
-
-  .session p {
-    font-size: 1.0625rem;
-    line-height: 1.5;
-  }
-
-  .facts {
-    gap: 2px 18px;
-  }
-
-  /* the diagonal becomes alternating widths */
-  .work__head,
-  .work__photo--a,
-  .work__text--a,
-  .work__text--b,
-  .work__more {
-    grid-column: 1 / -1;
-    grid-row: auto;
-  }
-
-  .work__head {
-    margin-bottom: 32px;
-  }
-
-  .work__text--a,
-  .work__text--b {
-    margin-top: 20px;
-  }
-
-  .work__photo--b {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    width: 78%;
-    justify-self: end;
-    margin-top: 56px;
-  }
-
-  .work__more {
-    margin-top: 40px;
-  }
-
-  .sun,
-  .stages {
-    grid-column: 1 / -1;
-  }
-
-  .stages {
-    margin-top: 48px;
-  }
-
-  .book__words {
-    margin-bottom: 40px;
-  }
-
-  .card {
-    grid-column: 1 / -1;
-    padding: 28px 24px;
-  }
-
-  .footer {
+  .cards {
     grid-template-columns: 1fr;
-    padding-top: 14svh;
-    gap: 8px;
   }
 
-  .footer__year {
-    justify-self: start;
+  .masonry {
+    columns: 2;
+    column-gap: 12px;
   }
 
-  .footer__links {
-    flex-wrap: wrap;
-    gap: 6px 20px;
+  .shot {
+    margin-bottom: 12px;
+    border-radius: 16px;
+  }
+
+  .chips {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__cols p {
+    grid-column: 1 / -1;
+  }
+
+  .lightbox__btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .lightbox__prev {
+    left: 10px;
+  }
+
+  .lightbox__next {
+    right: 10px;
   }
 }
 
-/* ---------- any upright screen (phone or tablet): the camera hangs in the
-   middle of the sessions screen and the words sit beneath it. The 3D stage
-   makes the same choice from the same test (see metrics() in stage.js). ---------- */
+/* ---------- any upright screen (phone or tablet): the photograph above, the
+   line beneath. The 3D stage makes the same choice from the same test (see
+   metrics() in stage.js). ---------- */
 
 @media (orientation: portrait) {
   .reveal__frame {
-    left: 0;
+    left: var(--m);
     bottom: auto;
-    width: 100%;
+    width: auto;
     height: 62svh;
   }
 
@@ -953,22 +1101,6 @@ a {
     right: var(--m);
     bottom: clamp(20px, 4vh, 48px);
     width: auto;
-  }
-
-  .sessions__head,
-  .tabs,
-  .sessions__stack {
-    grid-column: 1 / -1;
-  }
-
-  .sessions__stack {
-    align-self: end;
-    margin-top: 0;
-    max-width: 38rem;
-  }
-
-  .session {
-    align-self: end;
   }
 }
 
@@ -995,25 +1127,15 @@ a {
   display: none;
 }
 
-.reduced .sessions__panel {
-  height: auto;
-  min-height: 0;
-}
-
-.reduced .session {
-  grid-area: auto;
-  margin-top: 72px;
-}
-
-.reduced .tabs {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+
+  .hero__bokeh i {
+    animation: none;
   }
 }

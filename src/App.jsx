@@ -6,9 +6,8 @@ import { Stage } from './three/stage.js';
 import { buildScroll, playEntrance } from './lib/scroll.js';
 import Nav from './components/Nav.jsx';
 import Dive from './components/Dive.jsx';
-import Intro from './components/Intro.jsx';
+import Portfolio from './components/Portfolio.jsx';
 import Sessions from './components/Sessions.jsx';
-import Work from './components/Work.jsx';
 import Light from './components/Light.jsx';
 import Book from './components/Book.jsx';
 import Footer from './components/Footer.jsx';
@@ -75,9 +74,8 @@ export default function App() {
       <Nav />
       <main>
         <Dive />
-        <Intro />
+        <Portfolio />
         <Sessions />
-        <Work />
         <Light />
         <Book />
       </main>
