@@ -424,8 +424,24 @@ export class Stage {
   }
 
   heroPose() {
-    const { portrait, heroZ, visH } = this.metrics();
-    return { x: portrait ? -0.2 : 0.04, y: visH * (portrait ? 0.12 : 0.16), rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
+    const { portrait, heroZ: z0, visH: v0 } = this.metrics();
+    if (!portrait) return { x: 0.04, y: v0 * 0.16, rx: 0.17, ry: 0.66, rz: 0, camZ: z0 };
+
+    // On a phone the camera lives in the free band between the top bar and the
+    // line "Where grace meets light". That band changes with the screen, the
+    // browser's own bars and the user's text size, so measure it from the page
+    // instead of guessing: centre the camera in it, and step back if it is tight.
+    const h = window.innerHeight;
+    const script = document.querySelector('.hero__script');
+    const navBottom = (document.querySelector('.nav')?.offsetHeight ?? 70) + 8;
+    const bandBottom = (script ? script.offsetTop : h * 0.55) - 10;
+    const band = Math.max(80, bandBottom - navBottom);
+    const cameraPx = window.innerWidth * 0.46; // the camera's height on screen at the default distance
+    const heroZ = band < cameraPx * 1.1 ? (z0 * cameraPx * 1.1) / band : z0;
+    const visH = 2 * TAN * heroZ;
+    const centre = (navBottom + bandBottom) / 2;
+    const y = ((h / 2 - centre) / h) * visH;
+    return { x: -0.2, y, rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
   }
 
   sessionPose(i) {

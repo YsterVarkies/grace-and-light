@@ -280,8 +280,13 @@ button {
   transform: scaleX(1);
 }
 
-.nav .btn {
+.nav .nav__book {
   justify-self: end;
+}
+
+.nav__toggle,
+.menu {
+  display: none;
 }
 
 /* ---------- first screen and the dive ---------- */
@@ -1089,11 +1094,109 @@ button {
   }
 
   .nav {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
   }
 
   .nav__links {
     display: none;
+  }
+
+  /* hamburger */
+  .nav__toggle {
+    display: block;
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ink);
+    cursor: pointer;
+    transition: scale 0.2s var(--ease);
+  }
+
+  .nav__toggle:active {
+    scale: 0.94;
+  }
+
+  .nav__toggle span {
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+    transition:
+      transform 0.35s var(--ease),
+      opacity 0.2s var(--ease);
+  }
+
+  .nav__toggle span:nth-child(1) {
+    top: 16px;
+  }
+
+  .nav__toggle span:nth-child(2) {
+    top: 22px;
+  }
+
+  .nav__toggle span:nth-child(3) {
+    top: 28px;
+  }
+
+  .is-open .nav__toggle span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .is-open .nav__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .is-open .nav__toggle span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .menu {
+    display: grid;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    gap: 0;
+    padding: 6px var(--m) 28px;
+    border-radius: 0 0 28px 28px;
+    background: var(--cream);
+    box-shadow: var(--shadow);
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 -12px;
+    transition:
+      opacity 0.3s var(--ease),
+      translate 0.4s var(--ease),
+      visibility 0s linear 0.4s;
+  }
+
+  .is-open .menu {
+    visibility: visible;
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: 0s;
+  }
+
+  .menu a:not(.btn) {
+    padding: 13px 0;
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .menu .btn {
+    margin-top: 16px;
+  }
+
+  /* the bar stays put while the menu is open */
+  .nav.is-open {
+    translate: 0 0 !important;
   }
 
   .masonry {
@@ -1122,6 +1225,11 @@ button {
     flex-direction: column;
     align-items: stretch;
     gap: 18px;
+  }
+
+  .nav__book {
+    padding: 0 16px;
+    font-size: 0.875rem;
   }
 
   .hero__actions {
@@ -1205,22 +1313,46 @@ button {
   }
 }
 
+@media (max-width: 380px) {
+  .nav__book {
+    display: none;
+  }
+
+  .nav {
+    grid-template-columns: 1fr auto;
+  }
+}
+
 /* ---------- any upright screen (phone or tablet): the photograph above, the
    line beneath. The 3D stage makes the same choice from the same test (see
    metrics() in stage.js). ---------- */
 
 @media (orientation: portrait) {
+  /* A column: the photograph takes whatever height is left above the text, so
+     on a short screen (an Android phone with its browser bars showing) the
+     photograph gets smaller instead of running into the words. */
+  .reveal {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 2.4vh, 24px);
+    padding: calc(var(--nav-h) + 12px) var(--m) clamp(18px, 3.4vh, 36px);
+  }
+
   .reveal__frame {
-    left: var(--m);
-    bottom: auto;
-    width: auto;
-    height: 62svh;
+    position: relative;
+    inset: auto;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
   }
 
   .reveal__text {
-    right: var(--m);
-    bottom: clamp(20px, 4vh, 48px);
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
     width: auto;
+    flex: none;
   }
 }
 
