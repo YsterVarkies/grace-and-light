@@ -51,6 +51,25 @@ export const sessions = [
   }
 ];
 
+// How a session works, in order.
+export const steps = [
+  {
+    title: 'First, a message',
+    tint: 'blush',
+    text: 'Tell me who it is for and what you have in mind. We choose a place and a date, and I look up the light for that day.'
+  },
+  {
+    title: 'On the day',
+    tint: 'sky',
+    text: 'We meet about an hour before sunset, or just after sunrise if you are brave. There is no stiff posing. I guide, and you get on with being yourselves.'
+  },
+  {
+    title: 'Afterwards',
+    tint: 'sage',
+    text: 'I edit every frame by hand and send you an online gallery, ready to download and print.'
+  }
+];
+
 // What you see once the page has gone through the lens.
 export const reveal = {
   id: 'family-field',

@@ -69,12 +69,14 @@ figure,
 dl,
 dd,
 ul,
+ol,
 fieldset {
   margin: 0;
   padding: 0;
 }
 
-ul {
+ul,
+ol {
   list-style: none;
 }
 
@@ -116,6 +118,14 @@ button {
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: -0.025em;
+}
+
+/* The headline animation puts each word on its own layer, and a layer is only
+   as tall as its line. Give every word room below (and above) the line so the
+   tails of p, g and y and the tops of tall letters are never trimmed. */
+.head span[aria-hidden] {
+  padding: 0.14em 0.04em 0.3em;
+  margin: -0.14em -0.04em -0.3em;
 }
 
 .script {
@@ -777,14 +787,81 @@ button {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-.stages {
-  display: grid;
-  gap: 1.1em;
-  max-width: 40rem;
+.light__lead {
+  max-width: 36rem;
+  font-size: 1.1875rem;
+  color: var(--muted);
 }
 
-.stages strong {
-  font-weight: 600;
+/* ---------- how we work ---------- */
+
+.how {
+  background: var(--cream);
+}
+
+.how__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px 56px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.how__lead {
+  max-width: 30ch;
+  font-size: 1.1875rem;
+  color: var(--muted);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 340px;
+  padding: clamp(24px, 2.6vw, 38px);
+  border-radius: 32px;
+  background: var(--sand);
+}
+
+.step--blush {
+  background: var(--blush);
+}
+
+.step--sky {
+  background: var(--sky);
+}
+
+.step--sage {
+  background: var(--sage);
+}
+
+.step__num {
+  font-family: var(--script);
+  font-size: clamp(4.5rem, 3.6rem + 3vw, 6.5rem);
+  line-height: 0.8;
+  margin-bottom: clamp(18px, 2.4vw, 36px);
+}
+
+.step h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 1.4rem + 1.1vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.step p {
+  max-width: 34ch;
+  font-size: 1.125rem;
+  line-height: 1.55;
 }
 
 /* ---------- booking ---------- */
@@ -840,6 +917,11 @@ button {
 .field {
   display: grid;
   gap: 10px;
+  min-width: 0;
+}
+
+.card > * {
+  min-width: 0;
 }
 
 .field legend,
@@ -904,7 +986,12 @@ button {
 }
 
 .field input[type='date'] {
+  display: block;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
   min-height: 52px;
   padding: 0 18px;
   border: 0;
@@ -913,6 +1000,10 @@ button {
   color: var(--ink);
   font: inherit;
   font-variant-numeric: tabular-nums;
+}
+
+.field input[type='date']::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 .card__gold {
@@ -989,6 +1080,14 @@ button {
 }
 
 @media (max-width: 960px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .step {
+    min-height: 0;
+  }
+
   .nav {
     grid-template-columns: 1fr auto;
   }

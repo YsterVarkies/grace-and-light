@@ -8,6 +8,7 @@ import Nav from './components/Nav.jsx';
 import Dive from './components/Dive.jsx';
 import Portfolio from './components/Portfolio.jsx';
 import Sessions from './components/Sessions.jsx';
+import HowWeWork from './components/HowWeWork.jsx';
 import Light from './components/Light.jsx';
 import Book from './components/Book.jsx';
 import Footer from './components/Footer.jsx';
@@ -76,6 +77,7 @@ export default function App() {
         <Dive />
         <Sessions />
         <Portfolio />
+        <HowWeWork />
         <Light />
         <Book />
       </main>

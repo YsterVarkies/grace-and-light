@@ -49,6 +49,11 @@ export default function Light() {
             distance={26}
           />
 
+          <p className="light__lead" data-rise="self">
+            The best light in Dullstroom comes just after sunrise and just before sunset. Here is when it arrives
+            today.
+          </p>
+
           <div className="sun" data-rise>
             <h3 className="sun__title">Today in Dullstroom</h3>
             <dl className="sun__times">
@@ -70,20 +75,6 @@ export default function Light() {
             </p>
           </div>
 
-          <div className="stages" data-rise>
-            <p>
-              <strong>First, a message.</strong> Tell me who it is for and what you have in mind. We choose a place and
-              a date, and I look up the light for that day.
-            </p>
-            <p>
-              <strong>On the day,</strong> we meet about an hour before sunset, or just after sunrise if you are brave.
-              There is no stiff posing. I guide, and you get on with being yourselves.
-            </p>
-            <p>
-              <strong>Afterwards,</strong> I edit every frame by hand and send you an online gallery, ready to download
-              and print.
-            </p>
-          </div>
         </div>
       </div>
     </section>

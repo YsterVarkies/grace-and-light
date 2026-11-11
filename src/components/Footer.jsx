@@ -11,6 +11,7 @@ export default function Footer() {
         <nav aria-label="Pages">
           <a href="#sessions">Sessions</a>
           <a href="#portfolio">Portfolio</a>
+          <a href="#how">How we work</a>
           <a href="#light">The light</a>
           <a href="#book">Book a session</a>
         </nav>

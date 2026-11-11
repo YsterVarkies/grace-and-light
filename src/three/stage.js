@@ -425,7 +425,7 @@ export class Stage {
 
   heroPose() {
     const { portrait, heroZ, visH } = this.metrics();
-    return { x: portrait ? -0.2 : 0.04, y: visH * (portrait ? 0.075 : 0.16), rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
+    return { x: portrait ? -0.2 : 0.04, y: visH * (portrait ? 0.12 : 0.16), rx: 0.17, ry: 0.66, rz: 0, camZ: heroZ };
   }
 
   sessionPose(i) {
