@@ -769,8 +769,7 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  flex-wrap: wrap;
-  gap: 6px 24px;
+  gap: 12px 24px;
   padding: 16px 20px;
   border-radius: 18px;
   background: var(--cream);
@@ -781,6 +780,7 @@ button {
 }
 
 .sun__times dd {
+  white-space: nowrap;
   font-family: var(--serif);
   font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
   line-height: 1.1;
@@ -1163,6 +1163,24 @@ button {
 
   .chips {
     grid-template-columns: 1fr 1fr;
+  }
+
+  /* label and time stay on one line */
+  .sun {
+    padding: 20px 16px;
+  }
+
+  .sun__times div {
+    gap: 8px;
+    padding: 14px 14px;
+  }
+
+  .sun__times dt {
+    font-size: 0.9375rem;
+  }
+
+  .sun__times dd {
+    font-size: 1.3rem;
   }
 
   .footer__cols {
