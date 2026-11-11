@@ -1,0 +1,1019 @@
+/* Grace & Light Photography
+   Direction: "the dark room". One dark field, and in it, lit things.
+   One typeface (Newsreader), five sizes, one bronze accent kept for the action. */
+
+:root {
+  --bg: #111111;
+  --surface: #1c1c1c;
+  --field: #2a2a2a;
+  --ink: #f2f2f2;
+  --muted: #a6a6a6;
+  --accent: #a08672;
+  --accent-ink: #111111;
+  --light: #efe6d8; /* the light at the back of the lens */
+
+  --m: clamp(20px, 2.4vw, 32px);
+  --gap: clamp(16px, 1.7vw, 24px);
+  --nav-h: 64px;
+
+  --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --step-body: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
+  --step-lead: clamp(1.375rem, 1.05rem + 1.3vw, 2.125rem);
+  --step-head: clamp(2.25rem, 1rem + 4.6vw, 5.25rem);
+  --step-display: 18.2vw;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: var(--step-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+dl,
+dd,
+ul,
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+fieldset {
+  border: 0;
+  min-width: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- shared pieces ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding-inline: var(--m);
+}
+
+.section {
+  padding-block: clamp(104px, 13vw, 208px);
+}
+
+.head {
+  font-size: var(--step-head);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.statement {
+  font-size: var(--step-lead);
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+}
+
+.note {
+  font-size: var(--step-small);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.frame {
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: var(--step-body);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  /* press feedback uses the scale property, so it never fights the scripted transforms */
+  transition:
+    background-color 0.35s var(--ease),
+    scale 0.2s var(--ease);
+}
+
+.btn:hover {
+  background: var(--ink);
+}
+
+.btn:active {
+  scale: 0.97;
+}
+
+.btn--small {
+  min-height: 40px;
+  padding: 0 18px;
+  font-size: var(--step-small);
+}
+
+.btn--wide {
+  width: 100%;
+}
+
+/* ---------- the 3D camera: one fixed canvas above the page ---------- */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---------- navigation: a plain bar ---------- */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: var(--nav-h);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding-inline: var(--m);
+  background: var(--bg);
+  font-size: var(--step-small);
+  transition: translate 0.55s var(--ease);
+}
+
+.nav.is-away:not(:focus-within) {
+  translate: 0 -100%;
+}
+
+.nav__mark {
+  justify-self: start;
+  font-size: var(--step-body);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(20px, 2.6vw, 40px);
+}
+
+.nav__links a {
+  text-decoration: none;
+  padding-block: 8px;
+  position: relative;
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.nav__links a:hover::after,
+.nav__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.nav .btn {
+  justify-self: end;
+}
+
+/* ---------- first screen and the dive ---------- */
+
+.dive {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--nav-h) var(--m) clamp(20px, 3.4vh, 36px);
+}
+
+/* The name is sized from its own column, so it runs margin to margin whatever
+   the scrollbar or the screen does. */
+.hero__name {
+  container-type: inline-size;
+}
+
+.hero__title {
+  font-size: var(--step-display);
+  font-size: 19.05cqi;
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  white-space: nowrap !important;
+  margin-left: -0.035em;
+  padding-bottom: 0.06em;
+}
+
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: end;
+  margin-top: clamp(20px, 3vh, 40px);
+}
+
+.hero__line {
+  grid-column: 1 / span 5;
+  max-width: 34ch;
+  line-height: 1.4;
+}
+
+.hero__actions {
+  grid-column: 7 / -1;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 32px);
+}
+
+.hero__cue {
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+.reveal,
+.flash {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Through the lens: her photograph hangs on the right like a lit print, and
+   the line sits on the dark beside it. */
+.reveal {
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.reveal__frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 46vw;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.reveal__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.reveal__text {
+  position: absolute;
+  left: var(--m);
+  bottom: clamp(28px, 6vh, 72px);
+  width: calc(54vw - var(--m) * 2);
+  display: grid;
+  gap: clamp(16px, 2.6vh, 32px);
+}
+
+.reveal__title {
+  font-size: var(--step-head);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.reveal__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.reveal__line span {
+  display: block;
+}
+
+.reveal__note {
+  max-width: 24ch;
+  font-size: var(--step-lead);
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+  color: var(--muted);
+}
+
+.flash {
+  background: var(--light);
+}
+
+/* ---------- intro: her mark, and what the name means ---------- */
+
+.intro__head {
+  grid-column: 1 / -1;
+  margin-bottom: clamp(48px, 7vw, 112px);
+}
+
+.intro__mark {
+  grid-column: 1 / span 4;
+  align-self: start;
+}
+
+.intro__mark img {
+  width: 100%;
+  height: auto;
+}
+
+.intro__words {
+  grid-column: 7 / -1;
+  display: grid;
+  gap: 1.3em;
+  align-content: start;
+  max-width: 44rem;
+}
+
+.intro__words .statement {
+  text-indent: 3em;
+  margin-bottom: 0.4em;
+}
+
+/* ---------- sessions: one pinned screen ---------- */
+
+.sessions__panel {
+  height: 100svh;
+  min-height: 600px;
+  grid-template-rows: auto auto 1fr;
+  padding-top: calc(var(--nav-h) + clamp(20px, 6vh, 64px));
+  padding-bottom: clamp(24px, 7vh, 72px);
+}
+
+.sessions__head {
+  grid-column: 1 / span 7;
+}
+
+.tabs {
+  grid-column: 1 / span 7;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(18px, 2.4vw, 36px);
+  margin-top: clamp(10px, 2vh, 24px);
+}
+
+.tabs button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.35s var(--ease);
+}
+
+.tabs button:hover,
+.tabs button[aria-current='true'] {
+  color: var(--ink);
+}
+
+.sessions__stack {
+  grid-column: 1 / span 5;
+  align-self: start;
+  margin-top: clamp(28px, 9vh, 104px);
+  display: grid;
+}
+
+.session {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: grid;
+  gap: clamp(14px, 2vh, 26px);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 28px;
+  list-style: none;
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+/* ---------- recent work: two photographs down a diagonal ---------- */
+
+.work__item {
+  display: contents;
+}
+
+.work__head {
+  grid-column: 7 / -1;
+  grid-row: 1;
+}
+
+.work__photo--a {
+  grid-column: 1 / span 5;
+  grid-row: 1 / span 2;
+  aspect-ratio: 3 / 4;
+}
+
+.work__text--a {
+  grid-column: 7 / span 5;
+  grid-row: 2;
+  align-self: end;
+}
+
+.work__photo--b {
+  grid-column: 7 / span 5;
+  grid-row: 3;
+  aspect-ratio: 2 / 3;
+  margin-top: clamp(72px, 10vw, 160px);
+}
+
+.work__text--b {
+  grid-column: 2 / span 4;
+  grid-row: 3;
+  align-self: end;
+}
+
+.work__text {
+  display: grid;
+  gap: 14px;
+  max-width: 30rem;
+}
+
+.work__text h3 {
+  font-size: var(--step-lead);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.work__more {
+  grid-column: 7 / -1;
+  grid-row: 4;
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+/* ---------- the light ---------- */
+
+.light__head {
+  grid-column: 1 / -1;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.sun {
+  grid-column: 1 / span 5;
+  align-self: start;
+  display: grid;
+  gap: 18px;
+}
+
+.sun__title {
+  font-size: var(--step-body);
+  font-weight: 500;
+}
+
+.sun__times {
+  display: grid;
+  gap: 10px;
+}
+
+.sun__times div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  padding: 16px 20px;
+  background: var(--surface);
+}
+
+.sun__times dt {
+  color: var(--muted);
+}
+
+.sun__times dd {
+  font-size: var(--step-lead);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+}
+
+.stages {
+  grid-column: 7 / -1;
+  align-self: start;
+  display: grid;
+  gap: 1.2em;
+  max-width: 36rem;
+}
+
+.stages strong {
+  font-weight: 500;
+}
+
+/* ---------- booking: her sign-off, and the card beside it ---------- */
+
+.book__words {
+  grid-column: 1 / span 7;
+  align-self: end;
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+  max-width: 50rem;
+}
+
+.card {
+  grid-column: 9 / -1;
+  align-self: end;
+  display: grid;
+  gap: 22px;
+  padding: 32px;
+  background: var(--surface);
+}
+
+.card__title {
+  font-size: var(--step-lead);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.field {
+  display: grid;
+  gap: 10px;
+}
+
+.field legend,
+.field > span {
+  padding: 0;
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+.field legend {
+  margin-bottom: 10px;
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chip span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  background: var(--field);
+  line-height: 1;
+  transition:
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    scale 0.2s var(--ease);
+}
+
+.chip:hover span {
+  background: #363636;
+}
+
+.chip:active span {
+  scale: 0.97;
+}
+
+.chip input:checked + span {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.field input[type='date'] {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--field);
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.card__gold {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+.card__gold strong {
+  font-size: var(--step-body);
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.card__call {
+  font-size: var(--step-small);
+  color: var(--muted);
+  text-align: center;
+}
+
+.card__call a {
+  color: var(--ink);
+}
+
+/* ---------- footer: one quiet line ---------- */
+
+.footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 14px var(--gap);
+  padding: 18svh var(--m) 28px;
+  font-size: var(--step-small);
+}
+
+.footer__what,
+.footer__year {
+  color: var(--muted);
+}
+
+.footer__links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer__year {
+  justify-self: end;
+}
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 960px) {
+  .nav {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav__links,
+  .nav__kind {
+    display: none;
+  }
+
+  .hero__line {
+    grid-column: 1 / span 7;
+  }
+
+  .hero__actions {
+    grid-column: 8 / -1;
+  }
+
+  .hero__cue {
+    display: none;
+  }
+
+  .intro__mark {
+    grid-column: 1 / span 4;
+  }
+
+  .intro__words {
+    grid-column: 6 / -1;
+  }
+
+  .intro__words .statement {
+    text-indent: 2em;
+  }
+
+  .sessions__stack {
+    grid-column: 1 / span 6;
+  }
+
+  .work__text--b {
+    grid-column: 1 / span 5;
+  }
+
+  .sun {
+    grid-column: 1 / span 6;
+  }
+
+  .stages {
+    grid-column: 8 / -1;
+  }
+
+  .book__words {
+    grid-column: 1 / -1;
+    margin-bottom: 56px;
+  }
+
+  .card {
+    grid-column: 6 / -1;
+  }
+}
+
+/* ---------- phone: its own composition ---------- */
+
+@media (max-width: 640px) {
+  :root {
+    --step-display: 17.4vw;
+  }
+
+  .hero__meta {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+
+  .hero__line,
+  .hero__actions {
+    grid-column: 1 / -1;
+  }
+
+  .hero__actions,
+  .hero__actions > div,
+  .hero__actions .btn {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .hero__actions > div {
+    display: block !important;
+  }
+
+  .intro__head {
+    margin-bottom: 40px;
+  }
+
+  .intro__words {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .intro__words .statement {
+    text-indent: 0;
+  }
+
+  .intro__mark {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: 74%;
+    margin-top: 56px;
+  }
+
+  .tabs {
+    font-size: var(--step-small);
+    gap: 0 18px;
+  }
+
+  .session {
+    gap: 12px;
+  }
+
+  .session p {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+
+  .facts {
+    gap: 2px 18px;
+  }
+
+  /* the diagonal becomes alternating widths */
+  .work__head,
+  .work__photo--a,
+  .work__text--a,
+  .work__text--b,
+  .work__more {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .work__head {
+    margin-bottom: 32px;
+  }
+
+  .work__text--a,
+  .work__text--b {
+    margin-top: 20px;
+  }
+
+  .work__photo--b {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    width: 78%;
+    justify-self: end;
+    margin-top: 56px;
+  }
+
+  .work__more {
+    margin-top: 40px;
+  }
+
+  .sun,
+  .stages {
+    grid-column: 1 / -1;
+  }
+
+  .stages {
+    margin-top: 48px;
+  }
+
+  .book__words {
+    margin-bottom: 40px;
+  }
+
+  .card {
+    grid-column: 1 / -1;
+    padding: 28px 24px;
+  }
+
+  .footer {
+    grid-template-columns: 1fr;
+    padding-top: 14svh;
+    gap: 8px;
+  }
+
+  .footer__year {
+    justify-self: start;
+  }
+
+  .footer__links {
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+}
+
+/* ---------- any upright screen (phone or tablet): the camera hangs in the
+   middle of the sessions screen and the words sit beneath it. The 3D stage
+   makes the same choice from the same test (see metrics() in stage.js). ---------- */
+
+@media (orientation: portrait) {
+  .reveal__frame {
+    left: 0;
+    bottom: auto;
+    width: 100%;
+    height: 62svh;
+  }
+
+  .reveal__text {
+    right: var(--m);
+    bottom: clamp(20px, 4vh, 48px);
+    width: auto;
+  }
+
+  .sessions__head,
+  .tabs,
+  .sessions__stack {
+    grid-column: 1 / -1;
+  }
+
+  .sessions__stack {
+    align-self: end;
+    margin-top: 0;
+    max-width: 38rem;
+  }
+
+  .session {
+    align-self: end;
+  }
+}
+
+/* ---------- reduced motion: keep everything, drop the travel ---------- */
+
+.reduced .dive {
+  height: auto;
+  overflow: visible;
+}
+
+.reduced .hero {
+  position: relative;
+  height: 100svh;
+}
+
+.reduced .reveal {
+  position: relative;
+  height: 100svh;
+  visibility: visible;
+  opacity: 1;
+}
+
+.reduced .flash {
+  display: none;
+}
+
+.reduced .sessions__panel {
+  height: auto;
+  min-height: 0;
+}
+
+.reduced .session {
+  grid-area: auto;
+  margin-top: 72px;
+}
+
+.reduced .tabs {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
