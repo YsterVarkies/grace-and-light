@@ -10,8 +10,8 @@ export default function Nav() {
         <img src={asset(logo.src)} width={logo.width} height={logo.height} alt="" />
       </a>
       <nav className="nav__links" aria-label="Sections">
-        <a href="#portfolio">Portfolio</a>
         <a href="#sessions">Sessions</a>
+        <a href="#portfolio">Portfolio</a>
         <a href="#light">The light</a>
       </nav>
       <a className="btn btn--small" href="#book">

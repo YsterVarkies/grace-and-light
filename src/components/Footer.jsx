@@ -9,8 +9,8 @@ export default function Footer() {
       <img className="footer__logo" src={asset(logo.src)} width={logo.width} height={logo.height} alt={logo.alt} />
       <div className="footer__cols">
         <nav aria-label="Pages">
-          <a href="#portfolio">Portfolio</a>
           <a href="#sessions">Sessions</a>
+          <a href="#portfolio">Portfolio</a>
           <a href="#light">The light</a>
           <a href="#book">Book a session</a>
         </nav>

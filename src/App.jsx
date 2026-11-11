@@ -74,8 +74,8 @@ export default function App() {
       <Nav />
       <main>
         <Dive />
-        <Portfolio />
         <Sessions />
+        <Portfolio />
         <Light />
         <Book />
       </main>
